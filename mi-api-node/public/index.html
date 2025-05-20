@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Agregar Usuario</title>
+    <style>
+    body { font-family: Arial, sans-serif; margin: 50px; }
+    input, button { padding: 10px; margin-top: 10px; }
+    #mensaje { margin-top: 20px; color: green; }
+    </style>
+</head>
+<body>
+    <section>
+        <h1>Agregar Usuario</h1>
+        <div>
+
+        </div>
+        <input type="text" id="nombre" placeholder="Nombre del usuario" /><br/>
+        <button onclick="agregarUsuario()">Agregar</button>
+        <div id="mensaje"></div>
+    </section>
+    <script>
+    async function agregarUsuario() {
+        const nombre = document.getElementById('nombre').value;
+
+        if (!nombre) {
+            alert('Por favor, ingrese un nombre');
+            return;
+        }
+
+        try {
+        const respuesta = await fetch('http://localhost:3000/api/crtUsuarios', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre })
+        });
+
+        const data = await respuesta.json();
+
+        if (respuesta.ok) {
+            alert(`Usuario ${data.usuario.nombre} agregado con éxito`);
+            document.getElementById('nombre').value = '';
+        } else {
+            alert(`Error: ${data.mensaje}`);
+        }
+        } catch (error) {
+            alert('Error de conexión');
+        }
+    }
+    </script>
+</body>
+</html>

@@ -4,10 +4,16 @@ const Usuario = require('./models/usuario');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const path = require('path');
+const cors = require('cors');
 
 connectDB();
 
 app.use(express.json());
+//conectar html
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send('Hello, this is my API!');
